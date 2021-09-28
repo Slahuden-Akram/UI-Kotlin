@@ -1,5 +1,6 @@
 package com.example.uiprojectkotlin
 
+import android.app.AuthenticationRequiredException
 import android.app.DownloadManager
 import android.content.Intent
 import android.media.Image
@@ -11,10 +12,18 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
 import java.io.File
+import androidx.core.app.ShareCompat
+
+
+
 
 class Detailed_Activity : AppCompatActivity() {
+    private val AUTHORITY = "com.example.uiprojectkotlin.fileprovider"
     lateinit var img : ImageView
     lateinit var txtName : TextView
     lateinit var txtId : TextView
@@ -26,6 +35,36 @@ class Detailed_Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed)
 
+        getBindings()
+
+        showData()
+
+        download.setOnClickListener(View.OnClickListener {
+            DownloadItem()
+        })
+
+        share.setOnClickListener(View.OnClickListener {
+            shareItem()
+        })
+    }
+
+    private fun shareItem() {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "image/png"
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(intent.getStringExtra("Image").toString()))
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivity(Intent.createChooser(shareIntent, "Share image using"))
+    }
+
+    private fun showData() {
+        Glide.with(this@Detailed_Activity).load(Uri.parse(intent.getStringExtra("Image").toString())).into(img);
+        Toast.makeText(this, ""+intent.getStringExtra("Image").toString(), Toast.LENGTH_SHORT).show()
+        txtName.text = intent.getStringExtra("Name")
+        txtId.text = intent.getIntExtra("Id",0).toString()
+        txtDesc.text = intent.getStringExtra("Desc")
+    }
+
+    private fun getBindings() {
         img = findViewById(R.id.img)
         txtName = findViewById(R.id.txtName)
         txtId = findViewById(R.id.txtId)
@@ -33,25 +72,6 @@ class Detailed_Activity : AppCompatActivity() {
         download = findViewById(R.id.download)
         converter = findViewById(R.id.converter)
         share = findViewById(R.id.share)
-
-        img.setImageResource(intent.getIntExtra("Image", 0))
-        txtName.text = intent.getStringExtra("Name")
-        txtId.text = intent.getStringExtra("Id")
-        txtDesc.text = intent.getStringExtra("Desc")
-
-        download.setOnClickListener(View.OnClickListener {
-            DownloadItem()
-        })
-
-        share.setOnClickListener(View.OnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "image/png"
-            val photoFile = File(Environment.DIRECTORY_DOWNLOADS, intent.getStringExtra("Name"))
-            Toast.makeText(this@Detailed_Activity, "" + photoFile, Toast.LENGTH_SHORT).show()
-            shareIntent.putExtra(Intent.EXTRA_FROM_STORAGE, Uri.fromFile(photoFile))
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(Intent.createChooser(shareIntent, "Share image using"))
-        })
     }
 
     private fun DownloadItem() {

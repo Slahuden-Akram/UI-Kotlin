@@ -21,7 +21,7 @@ data class DataModel (
 
 //    @SerializedName("id")
 //    @Expose
-//    val id : Integer,
+//    val id : String,
 //
 //    @SerializedName("url")
 //    @Expose
