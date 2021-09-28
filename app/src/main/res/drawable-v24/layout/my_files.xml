@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#2c405d"
+    android:orientation="vertical"
+    android:weightSum="10">
+<!--    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/round_shape_top"
+        android:backgroundTint="@color/white"
+        android:layout_margin="30dp"
+        android:weightSum="10"
+        android:orientation="vertical">
+        <TextView
+            style="@style/Widget.AppCompat.TextView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_shape_top"
+            android:gravity="center"
+            android:text="My Files"
+            android:textSize="20sp"
+            android:textColor="#dacef2"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:id="@+id/rclView"/>
+        <ImageView
+            android:id="@+id/imgNext"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_bottom"
+            android:src="@drawable/next"
+            app:tint="#dacef2" />
+    </LinearLayout>
+
+</LinearLayout>
