@@ -12,12 +12,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
-import org.w3c.dom.Text
-import java.io.File
-import androidx.core.app.ShareCompat
 
 
 
@@ -50,7 +45,7 @@ class Detailed_Activity : AppCompatActivity() {
 
     private fun shareItem() {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "image/png"
+        shareIntent.type = "image/*"
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(intent.getStringExtra("Image").toString()))
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         startActivity(Intent.createChooser(shareIntent, "Share image using"))
@@ -58,7 +53,7 @@ class Detailed_Activity : AppCompatActivity() {
 
     private fun showData() {
         Glide.with(this@Detailed_Activity).load(Uri.parse(intent.getStringExtra("Image").toString())).into(img);
-        Toast.makeText(this, ""+intent.getStringExtra("Image").toString(), Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, ""+intent.getStringExtra("Image").toString(), Toast.LENGTH_SHORT).show()
         txtName.text = intent.getStringExtra("Name")
         txtId.text = intent.getIntExtra("Id",0).toString()
         txtDesc.text = intent.getStringExtra("Desc")
